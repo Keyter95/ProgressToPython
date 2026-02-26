@@ -4,7 +4,9 @@ function InputBoxes(props) {
   const heading = props.heading;
   const id = props.id;
   const type = props.type;
-  console.log("state?", heading, id, type);
+  const value = props.value;
+  const onChange = props.onChange;
+
   return (
     <div className="big-box">
       <h2 className={`${heading}-heading`}>{heading}</h2>
@@ -15,8 +17,13 @@ function InputBoxes(props) {
             : `Your ${heading} output will be generated here...`}
         </h4>
         <textarea
-          className={type == "input" ? "raw" : "result"}
+          className={
+            type == "input" ? "raw" : type == "file" ? "file-upload" : "result"
+          }
           id={type == "input" ? "input-box" : "result-box"}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder={`Enter ${heading} code here...`}
         ></textarea>
       </div>
     </div>

@@ -9,8 +9,17 @@ function App() {
   const [toLang, setToLang] = useState("select");
   const [uploadType, setUploadType] = useState("input-box");
   const [file, setFile] = useState(null);
+  const [inputText, setInputText] = useState("");
+  const [outputText, setOutputText] = useState("");
+
   function handleFileChange(e) {
     setFile(e.target.files[0]);
+    const fileName = e.target.files[0].name;
+    if (fileName) {
+      e.target.classList.add("active");
+    } else {
+      e.target.classList.remove("active");
+    }
   }
   return (
     <>
@@ -23,6 +32,8 @@ function App() {
           <DropDown
             options={["Select", "Progress"]} //Add Python here in future
             onChange={(value) => {
+              setInputText("");
+              setOutputText("");
               setFromLang(value);
             }}
           />
@@ -32,6 +43,8 @@ function App() {
           <DropDown
             options={["Select", "Python"]} //Add Progress ABL here in future
             onChange={(value) => {
+              setInputText("");
+              setOutputText("");
               setToLang(value);
             }}
           />
@@ -64,6 +77,8 @@ function App() {
               type="input"
               heading={fromLang}
               id={`${fromLang}-input`}
+              value={inputText}
+              onChange={setInputText}
             />
           ) : (
             <div className="big-box">
@@ -74,6 +89,7 @@ function App() {
                   type="file"
                   accept=".py,.p,.cls,.w"
                   onChange={handleFileChange}
+                  required
                 />
               </div>
             </div>
@@ -93,6 +109,7 @@ function App() {
               class="download-button hidden"
               label="Download"
               func="download"
+              toLang={toLang}
             />
             <Button
               class="copy-button hidden"
@@ -116,6 +133,7 @@ function App() {
                 class="download-button hidden"
                 label="Download"
                 func="download"
+                toLang={toLang}
               />
               <Button
                 class="copy-button hidden"
@@ -126,7 +144,13 @@ function App() {
           )
         )}
         {toLang !== "select" && (
-          <InputBoxes type="output" heading={toLang} id={`${toLang}-input`} />
+          <InputBoxes
+            type="output"
+            heading={toLang}
+            id={`${toLang}-input`}
+            value={outputText}
+            onChange={setOutputText}
+          />
         )}
       </div>
     </>

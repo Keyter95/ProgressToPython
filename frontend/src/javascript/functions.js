@@ -39,6 +39,7 @@ export async function convertProgress(inputCode, fromLang, toLang) {
   return data.converted_code;
 }
 export function downloadFile(toLang) {
+  let fileName = "";
   if (toLang.toLowerCase() == "python") {
     fileName = "converted_code.py";
   } else {

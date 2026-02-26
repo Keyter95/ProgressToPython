@@ -9,7 +9,6 @@ import {
 function Button(props) {
   let classN = props.class;
   let label = props.label;
-  console.log("bernadette 2--->", classN, label);
   return (
     <div
       className={classN}

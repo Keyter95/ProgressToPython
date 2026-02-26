@@ -17,7 +17,7 @@ def variable_declaration(abl_string,variables):
     variables.append(var_name)
     type_dict = {
         "integer": f"{var_name}: int = {initial_val if initial_val != "" else 0}",
-        "character": f"{var_name}: str = {initial_val if initial_val != "" else ''}",
+        "character": f"{var_name}: str = {initial_val if initial_val != "" else f'""'}",
         "logical": f"{var_name}: bool = {initial_val if initial_val != "" else True}",
         "int64": f"{var_name}: int = {initial_val if initial_val != "" else 0}",
         "decimal": f"{var_name}: float = {initial_val if initial_val != "" else 0}",
@@ -108,12 +108,21 @@ def for_each_loops(input_line,variable_list,start_db):
 
 #This deals with DISPLAY and MESSAGE statements
 def display_content(input_line):
-
-    to_display = ",".join(input_line)
+    print("display statement 1",input_line)
+    return_string = ""
+    for i,word in enumerate(input_line[0].split(",")):
+        
+        if word.lower() == "message":
+            return_string = return_string
+        elif word.lower() == "display":
+            return_string = return_string
+        else:
+            return_string += f'{word},'
+    to_display = return_string.strip(",")
     return f'print({to_display})'
 
 #This line works with any variable calculations in the code somewhere
-def variable_calc(input_line,variables):
+def variable_calc(input_line):
     operators = ["+","-","/","*","MOD",">","<","<=",">="]
     operators = {
         "MOD":"%",
@@ -133,7 +142,7 @@ def variable_calc(input_line,variables):
         new_string = input_line
             
     return new_string
-
+#This code converts Progress do and else do blocks
 def do_blocks(input_line,variable_list):
     operators = ["+","-","/","*","MOD",">","<","<=",">=","or","and","="]
     print("if block",input_line)
@@ -165,7 +174,7 @@ def do_blocks(input_line,variable_list):
                 continue
     return_string += ":"
     return return_string.strip()
-
+#This works with the procedure definitions in progress
 def procedures(input_arr,variable_list):
     par_names = []
     output_type = []
@@ -193,9 +202,8 @@ def procedures(input_arr,variable_list):
     return_line += ",".join(par_names)
     return_line += f") {''.join(output_type)}:"    
     return return_line,variable_list,output_var.strip(",")
-    
+ #Assign statements get handled here   
 def assign_content(input_line,variable_list):
-    #ASSIGN var1 = 1,var2 = ENTRY(1; cList),var3 = 10.
     if input_line[len("assign")] == ",":
         assign = input_line[input_line.find(","):].strip().strip(",").strip(".").split(",")
     else:
@@ -206,17 +214,20 @@ def assign_content(input_line,variable_list):
         assign = input_line.strip().strip(",").strip(".").split(",")
 
     for i, entry in enumerate(assign):
+        print("variable assign 2",variable_list)
         if entry[0:entry.find(".")] in variable_list:
               left = f'{entry[0:entry.find(".")]}["{entry[entry.find(".") + 1:entry.find("=")].strip()}"]'
               right = entry[entry.find("="):]
               assign[i] = f'{left} {right}'
+              
         #iPos = LOOKUP("Green", cList).
         elif "lookup" in entry.lower():
             assign[i] = lookups(entry)
         elif "entry" in entry.lower():
             assign[i] = entries(entry)
+        assign[i] = variable_calc(assign[i])
     return "\n".join(assign)
-
+#Find firsts or find lasts get handled here
 def finds(input_line,db_started,variable_list):
     end_operators = ["=","eq","<>","ne"]
     to_strip = ["NO-ERROR","NO-LOCK","EXCLUSIVE-LOCK","FIND","LAST","FIRST"]
@@ -267,7 +278,7 @@ def available(input_line):
     table_name = input_line[input_line.lower().find("available") + len("AVAILABLE"):input_line.lower().find("then")].strip()
     
     return f'if {table_name}:'
-
+#Run statements used to run procedures get used here
 def run_procedures(input_line):
     proc_name = input_line[len("RUN "):input_line.find("(")].strip()
     string_array = input_line[input_line.find("("):input_line.find(")")].strip().strip("(")

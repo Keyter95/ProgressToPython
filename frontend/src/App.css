@@ -261,3 +261,7 @@ input[type="radio"]:checked + label {
   box-shadow: 0 0 8px rgba(92, 229, 0, 0.25);
   border: 1px solid rgba(92, 229, 0, 0.7);
 }
+.active {
+  background-color: var(--pythonblue);
+  border-radius: 5px;
+}
