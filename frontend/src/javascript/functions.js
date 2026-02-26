@@ -3,7 +3,7 @@ export async function convertProgressPrepare(fromLang, toLang) {
   let Output = document.getElementById("result-box");
   let downloadBtn = document.querySelector(".download-button");
   let copyBtn = document.querySelector(".copy-button");
-  console.log("bernadette 1--->", copyBtn);
+
   try {
     const result = await convertProgress(input, fromLang, toLang);
     Output.value = result;
@@ -16,17 +16,20 @@ export async function convertProgressPrepare(fromLang, toLang) {
 }
 
 export async function convertProgress(inputCode, fromLang, toLang) {
-  const response = await fetch("http://127.0.0.1:8000/api/convert", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
+  const response = await fetch(
+    "progresstopython-production.up.railway.app/api/convert",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        code: inputCode,
+        from: fromLang,
+        to: toLang,
+      }),
     },
-    body: JSON.stringify({
-      code: inputCode,
-      from: fromLang,
-      to: toLang,
-    }),
-  });
+  );
 
   if (!response.ok) {
     throw new Error("API request failed");
