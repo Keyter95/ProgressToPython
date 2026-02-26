@@ -83,7 +83,7 @@ def for_each_loops(input_line,variable_list,start_db):
     else:
         where_end = input_line.lower().find("no-") if "no-" in input_line.lower() else input_line.lower().find("exclusive-") if "exclusive-" in input_line.lower() else len(input_line)
     where = input_line[input_line.lower().find("where"):where_end].strip()
-    template["where"][0]["operator"] = "begins" if "begins" in where.lower() else "matches" if "matches" in where.lower() else "=" 
+    template["where"][0]["operator"] = "begins" if "begins" in where.lower() else "matches" if "matches" in where.lower() else "==" if ("=" in where or "eq" in where.lower()) else ("!=") 
     operator = where.find(template["where"][0]["operator"].upper())
     template["where"][0]["left"] = where[(where.find(".") + 1):operator].strip()
     template["where"][0]["right"] = where[operator + len(template["where"][0]["operator"]):].strip()
@@ -195,7 +195,6 @@ def procedures(input_arr,variable_list):
     return return_line,variable_list,output_var.strip(",")
     
 def assign_content(input_line,variable_list):
-    print("bernadette 4--->",input_line,input_line[len("assign")])
     #ASSIGN var1 = 1,var2 = ENTRY(1; cList),var3 = 10.
     if input_line[len("assign")] == ",":
         assign = input_line[input_line.find(","):].strip().strip(",").strip(".").split(",")
@@ -205,7 +204,6 @@ def assign_content(input_line,variable_list):
         elif "assign" in input_line:
             input_line = input_line.replace("assign","")
         assign = input_line.strip().strip(",").strip(".").split(",")
-        print("bernadette 5--->",assign)
     for i, entry in enumerate(assign):
         if entry[0:entry.find(".")] in variable_list:
               left = f'{entry[0:entry.find(".")]}["{entry[entry.find(".") + 1:entry.find("=")].strip()}"]'
@@ -251,7 +249,7 @@ def finds(input_line,db_started,variable_list):
         template["table"] = line[0:].strip().strip(".")
     return_string = f"'SELECT * FROM {template['table']} "
     if "where" in line.lower():
-        template["where"][0]["operator"] = next((var.lower() for var in end_operators if var.lower() in line), None).strip()
+        template["where"][0]["operator"] = "begins" if "begins" in line.lower() else "matches" if "matches" in line.lower() else "==" if ("=" in line or "eq" in line.lower()) else ("!=") 
         template["where"][0]["left"] = line[line.lower().find("where") + len("WHERE"):line.find(template["where"][0]["operator"])].strip()
         template["where"][0]["right"] = line[line.find(template["where"][0]["operator"]) + 1:].strip().strip(".")
         return_string += f'WHERE {template["where"][0]["left"]} {template["where"][0]["operator"]} {template["where"][0]["right"]}'
