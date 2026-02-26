@@ -21,7 +21,7 @@ function App() {
         <div id="from-language" className="header">
           <h2>From Language:</h2>
           <DropDown
-            options={["Select", "Python", "Progress"]}
+            options={["Select", "Progress"]} //Add Python here in future
             onChange={(value) => {
               setFromLang(value);
             }}
@@ -30,7 +30,7 @@ function App() {
         <div id="to-language" className="header">
           <h2>To Language:</h2>
           <DropDown
-            options={["Select", "Python", "Progress"]}
+            options={["Select", "Python"]} //Add Progress ABL here in future
             onChange={(value) => {
               setToLang(value);
             }}

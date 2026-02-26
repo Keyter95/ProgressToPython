@@ -204,6 +204,7 @@ def assign_content(input_line,variable_list):
         elif "assign" in input_line:
             input_line = input_line.replace("assign","")
         assign = input_line.strip().strip(",").strip(".").split(",")
+
     for i, entry in enumerate(assign):
         if entry[0:entry.find(".")] in variable_list:
               left = f'{entry[0:entry.find(".")]}["{entry[entry.find(".") + 1:entry.find("=")].strip()}"]'
@@ -249,7 +250,7 @@ def finds(input_line,db_started,variable_list):
         template["table"] = line[0:].strip().strip(".")
     return_string = f"'SELECT * FROM {template['table']} "
     if "where" in line.lower():
-        template["where"][0]["operator"] = "begins" if "begins" in line.lower() else "matches" if "matches" in line.lower() else "==" if ("=" in line or "eq" in line.lower()) else ("!=") 
+        template["where"][0]["operator"] = next((var.lower() for var in end_operators if var.lower() in line), None).strip()
         template["where"][0]["left"] = line[line.lower().find("where") + len("WHERE"):line.find(template["where"][0]["operator"])].strip()
         template["where"][0]["right"] = line[line.find(template["where"][0]["operator"]) + 1:].strip().strip(".")
         return_string += f'WHERE {template["where"][0]["left"]} {template["where"][0]["operator"]} {template["where"][0]["right"]}'
