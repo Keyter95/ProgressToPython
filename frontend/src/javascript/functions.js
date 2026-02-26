@@ -17,7 +17,7 @@ export async function convertProgressPrepare(fromLang, toLang) {
 
 export async function convertProgress(inputCode, fromLang, toLang) {
   const response = await fetch(
-    "progresstopython-production.up.railway.app/api/convert",
+    "https://progresstopython-production.up.railway.app/api/convert",
     {
       method: "POST",
       headers: {
