@@ -28,7 +28,6 @@ def variable_declaration(abl_string,variables):
 
 #FOR EACH loops get converted here
 def for_each_loops(input_line,variable_list,start_db):
-    print("for eaches 2", input_line)
     return_lines = []
     to_strip = ["NO-ERROR","NO-LOCK","EXCLUSIVE-LOCK","FOR","LAST","FIRST"]
     if start_db == False:
@@ -65,7 +64,6 @@ def for_each_loops(input_line,variable_list,start_db):
         return ""
     for word in to_strip:
         input_line = input_line.replace(word, "")
-    print("for eaches:",input_line)
     template["type"] = input_line[0:(idx + len(type))]
     if "where" in input_line.lower():
         table = input_line[0:input_line.lower().find("where")].strip().strip(".")
@@ -108,9 +106,11 @@ def for_each_loops(input_line,variable_list,start_db):
 
 #This deals with DISPLAY and MESSAGE statements
 def display_content(input_line):
-    print("display statement 1",input_line)
+    #print("Found ",+,ENTRY(iTarget,,cData),+," at position ",+,STRING(iTarget))
+    displays = input_line
+    displays = [item for item in displays if item.strip("+")]
     return_string = ""
-    for i,word in enumerate(input_line[0].split(",")):
+    for i,word in enumerate(displays):
         
         if word.lower() == "message":
             return_string = return_string
@@ -129,23 +129,24 @@ def variable_calc(input_line):
         "MODULO":"%"
     }
     new_string = ""
+    
     words = input_line.split(" ")
+    words = [item for item in words if item.strip()]
     word_counts = Counter(words)
     duplicates = [word for word, count in word_counts.items() if count > 1]
     assembly = False
     for index,word in enumerate(words):
-        if word in duplicates:
-            assembly = True
-            if words[index + 1] == "=" and words[index + 2] == word:
-                new_string += f'{word} {words[index + 3]}= {words[len(words) - 1]}'
+        if word != "":
+            if word in duplicates:
+                assembly = True
+                if words[index + 1] == "=" and words[index + 2] == word:
+                    new_string += f'{word} {words[index + 3]}= {words[len(words) - 1]}'
     if assembly == False:
-        new_string = input_line
-            
+        new_string = input_line      
     return new_string
 #This code converts Progress do and else do blocks
 def do_blocks(input_line,variable_list):
     operators = ["+","-","/","*","MOD",">","<","<=",">=","or","and","="]
-    print("if block",input_line)
     return_string = ""
     if "else" in input_line.lower():
         return "else:"
@@ -204,17 +205,16 @@ def procedures(input_arr,variable_list):
     return return_line,variable_list,output_var.strip(",")
  #Assign statements get handled here   
 def assign_content(input_line,variable_list):
-    if input_line[len("assign")] == ",":
-        assign = input_line[input_line.find(","):].strip().strip(",").strip(".").split(",")
+    #ASSIGN cData   = "Python,Progress,Java,C++",iTarget = LOOKUP("Progress", cData).
+    if input_line[len("assign")] == "|":
+        assign = input_line[input_line.find(","):].strip().strip(",").strip(".").strip("|").split("|")
     else:
         if "ASSIGN" in input_line:
             input_line = input_line.replace("ASSIGN","")
         elif "assign" in input_line:
             input_line = input_line.replace("assign","")
-        assign = input_line.strip().strip(",").strip(".").split(",")
-
+        assign = input_line.strip().strip(",").strip(".").strip("|").split("|")
     for i, entry in enumerate(assign):
-        print("variable assign 2",variable_list)
         if entry[0:entry.find(".")] in variable_list:
               left = f'{entry[0:entry.find(".")]}["{entry[entry.find(".") + 1:entry.find("=")].strip()}"]'
               right = entry[entry.find("="):]
@@ -270,7 +270,6 @@ def finds(input_line,db_started,variable_list):
     return_lines.append(f"cursor.execute({return_string})")
     return_lines.append(f"{template['table'].lower()} = cursor.fetchone()")
     variable_list.append(template['table'].strip())
-    print("finds 2",variable_list)
     return "\n".join(return_lines),db_started,variable_list
 
 def available(input_line):
@@ -304,9 +303,7 @@ def lookups(input_line):
     return f'{var} = {check_list}.find({what})'
     
 def entries(input_line):
-    print("entries 1",input_line)
     var = input_line[0:input_line.find("=")].strip()
-    print("entries",input_line[input_line.find("(") + 1:input_line.find(";")].strip())
     idx = int(input_line[input_line.find("(") + 1:input_line.find(";")].strip()) - 1
     list = input_line[input_line.find(";") + 1:input_line.find(")")].strip()
     return f'{var} = {list}.split(",")[{idx}]'

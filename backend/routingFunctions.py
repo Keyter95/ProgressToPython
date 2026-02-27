@@ -85,21 +85,18 @@ def progress_to_python(input_arr):
                 else:
                     is_single_line_if = True
             elif bool(re.match("assign",clean_line.lower(),re.IGNORECASE)) or assign_still == True:
-                print("in the assign--->",clean_line)
                 if "lookup" in clean_line.lower():
                     clean_line = clean_line.replace(",",";")
                 elif "entry" in clean_line.lower():
                     clean_line = clean_line.replace(",",";")
                 if clean_line[len(clean_line) - 1] != ".":
-                    print("bernadette 2--->",clean_line)
-                    assign_line += f',{clean_line}'
+                    assign_line += f'|{clean_line}'
                     assign_still = True
                     continue
                 else:
-                    assign_line += f',{clean_line}'
+                    assign_line += f'|{clean_line}'
                     assign_still = False
-                    print("bernadette 3--->",assign_line)
-                    line_to_space= assign_content(assign_line.strip(","),variable_list).split("\n")
+                    line_to_space= assign_content(assign_line.strip("|"),variable_list).split("\n")
                     line = ""
                     for item in line_to_space:
                         line += f'\n{'\t' * indent}{item}'
