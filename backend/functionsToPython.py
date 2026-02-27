@@ -106,8 +106,11 @@ def for_each_loops(input_line,variable_list,start_db):
 
 #This deals with DISPLAY and MESSAGE statements
 def display_content(input_line):
+    if len(input_line) == 1 and "," in input_line[0]:
+        displays = [word.strip() for word in input_line[0].split(",")]
+    else:
+        displays = [word.strip() for word in input_line]
     #print("Found ",+,ENTRY(iTarget,,cData),+," at position ",+,STRING(iTarget))
-    displays = input_line
     displays = [item for item in displays if item.strip("+")]
     return_string = ""
     for i,word in enumerate(displays):
@@ -207,7 +210,7 @@ def procedures(input_arr,variable_list):
 def assign_content(input_line,variable_list):
     #ASSIGN cData   = "Python,Progress,Java,C++",iTarget = LOOKUP("Progress", cData).
     if input_line[len("assign")] == "|":
-        assign = input_line[input_line.find(","):].strip().strip(",").strip(".").strip("|").split("|")
+        assign = input_line[input_line.find("|"):].strip().strip(",").strip(".").strip("|").split("|")
     else:
         if "ASSIGN" in input_line:
             input_line = input_line.replace("ASSIGN","")
