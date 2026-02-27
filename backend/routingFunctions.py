@@ -31,7 +31,6 @@ def progress_to_python(input_arr):
                 line,variable_list = variable_declaration(clean_line,variable_list)
                 python_lines.append(line)
             elif (bool(re.match(r'^\s*for\s+each(?=(?:[^"]*"[^"]*")*[^"]*$)', clean_line, re.IGNORECASE)) or end_of_loop == False) or (bool(re.match(r'^\s*for\s+first(?=(?:[^"]*"[^"]*")*[^"]*$)', clean_line, re.IGNORECASE)) or end_of_loop == False):
-                print("routing---> 1",clean_line)
                 if clean_line[len(clean_line) - 1] != ":":
                     end_of_loop = False
                     for_array.append(clean_line)
@@ -149,7 +148,10 @@ def progress_to_python(input_arr):
             #if is_single_line_if and not clean_line.upper().startswith("ELSE"):
              #   indent -= 1
              #   is_single_line_if = False
-
+    if for_server_started:
+        importArr = ["import sqlite3"]
+        importArr.extend(python_lines)
+        return importArr
     return python_lines
 
 def python_to_progress(input_arr):

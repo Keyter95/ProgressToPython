@@ -9,3 +9,5 @@ The project features a UI screen that offers a developer various options to conv
 The frontend is React.js based, integrated with JS functions and the backend is Python based which gave me the ability to learn how to use an external API.
 
 Currently in Beta, I am busy working on a translator that translates code back from Python to Progress. Making this project a two way translator rather than just a one way converter.
+
+As a small sidenote, because this project was delpoyed using Railway, the first conversion might take up to 30seconds as the server connection starts up. Thank you for your patience!

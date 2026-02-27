@@ -26,11 +26,11 @@ async def converter(request: Request):
        return_lines = progress_to_python(input_arr)
         
     elif fromLang == "python" and toLang == "progress":
-        print("bernadette 13--->",input_arr)
         return_lines = python_to_progress(input_arr)
 
     elif fromLang == toLang:
         return_lines = input_arr
+
     return {"converted_code": "\n".join(return_lines)}
 
 
