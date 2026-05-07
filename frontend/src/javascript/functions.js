@@ -1,9 +1,10 @@
+const API_BASE_URL = process.env.REACT_APP_API_URL || "http://127.0.0.1:8000";
+
 export async function convertProgressPrepare(fromLang, toLang) {
   let input = document.getElementById("input-box").value;
   let Output = document.getElementById("result-box");
   let downloadBtn = document.querySelector(".download-button");
   let copyBtn = document.querySelector(".copy-button");
-  const API_BASE_URL = process.env.REACT_APP_API_URL || "http://127.0.0.1:8000";
 
   try {
     const result = await convertProgress(input, fromLang, toLang);
