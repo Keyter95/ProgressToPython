@@ -3,6 +3,7 @@ export async function convertProgressPrepare(fromLang, toLang) {
   let Output = document.getElementById("result-box");
   let downloadBtn = document.querySelector(".download-button");
   let copyBtn = document.querySelector(".copy-button");
+  const API_BASE_URL = process.env.REACT_APP_API_URL || "http://127.0.0.1:8000";
 
   try {
     const result = await convertProgress(input, fromLang, toLang);
@@ -16,20 +17,17 @@ export async function convertProgressPrepare(fromLang, toLang) {
 }
 
 export async function convertProgress(inputCode, fromLang, toLang) {
-  const response = await fetch(
-    "https://progresstopython-production.up.railway.app/api/convert",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        code: inputCode,
-        from: fromLang,
-        to: toLang,
-      }),
+  const response = await fetch(`${API_BASE_URL}/api/convert`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
     },
-  );
+    body: JSON.stringify({
+      code: inputCode,
+      from: fromLang,
+      to: toLang,
+    }),
+  });
 
   if (!response.ok) {
     throw new Error("API request failed");
