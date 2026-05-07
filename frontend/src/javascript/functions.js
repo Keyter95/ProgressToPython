@@ -6,14 +6,17 @@ export async function convertProgressPrepare(fromLang, toLang) {
   let downloadBtn = document.querySelector(".download-button");
   let copyBtn = document.querySelector(".copy-button");
 
+  Output.value =
+    "Server is waking up... Please wait (this can take 30 seconds on the first run).";
+
   try {
     const result = await convertProgress(input, fromLang, toLang);
     Output.value = result;
     downloadBtn.classList.remove("hidden");
     copyBtn.classList.remove("hidden");
   } catch (err) {
-    console.error(err);
-    Output.value = "Conversion failed";
+    Output.value =
+      "Still waking up... Please click translate again in a few seconds.";
   }
 }
 
@@ -93,3 +96,10 @@ export function copyToClipboard() {
       console.error("Failed to copy: ", err);
     });
 }
+(function wakeUpServer() {
+  const API_BASE_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000";
+
+  fetch(`${API_BASE_URL}/api/convert`, { method: "HEAD" })
+    .then(() => console.log("Backend wake-up signal sent"))
+    .catch(() => console.log("Backend is currently sleeping"));
+})();
