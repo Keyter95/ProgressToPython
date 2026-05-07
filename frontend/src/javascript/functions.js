@@ -96,10 +96,9 @@ export function copyToClipboard() {
       console.error("Failed to copy: ", err);
     });
 }
-(function wakeUpServer() {
+setTimeout(() => {
   const API_BASE_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000";
-
-  fetch(`${API_BASE_URL}/api/convert`, { method: "HEAD" })
-    .then(() => console.log("Backend wake-up signal sent"))
-    .catch(() => console.log("Backend is currently sleeping"));
-})();
+  fetch(API_BASE_URL)
+    .then(() => console.log("Backend is awake!"))
+    .catch(() => console.log("Sent wake-up signal to Render."));
+}, 1000);
