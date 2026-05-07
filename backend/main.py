@@ -1,8 +1,6 @@
 from fastapi import FastAPI,Request # type: ignore
 from fastapi.middleware.cors import CORSMiddleware # type: ignore
 from routingFunctions import progress_to_python,python_to_progress
-import os
-port = int(os.environ.get("PORT", 8000))
 
 app = FastAPI()
 app.add_middleware(
