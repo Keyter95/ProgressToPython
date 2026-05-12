@@ -82,6 +82,9 @@ h2 {
 h4 {
   text-align: center;
 }
+.placeholder_text {
+  color: var(--gray) !important;
+}
 textarea {
   border-radius: 12px;
   border: 2px solid transparent;

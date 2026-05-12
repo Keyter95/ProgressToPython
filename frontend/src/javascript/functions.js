@@ -101,4 +101,4 @@ setTimeout(() => {
   fetch(API_BASE_URL)
     .then(() => console.log("Backend is awake!"))
     .catch(() => console.log("Sent wake-up signal to Render."));
-}, 1000);
+}, 500);

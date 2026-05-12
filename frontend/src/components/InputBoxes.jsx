@@ -11,7 +11,7 @@ function InputBoxes(props) {
     <div className="big-box">
       <h2 className={`${heading}-heading`}>{heading}</h2>
       <div className={"box " + id}>
-        <h4>
+        <h4 className="placeholder_text">
           {type == "input"
             ? `Paste your ${heading} code here...`
             : `Your ${heading} output will be generated here...`}
